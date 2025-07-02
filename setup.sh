@@ -1,31 +1,24 @@
 #!/bin/bash
 
+echo "Look its its its 📁 its an ugly yellow folder"
 
-echo "📁 Creating ~/.config if it doesn't exist..."
-mkdir -p ~/.config
+echo "📦 Installing mimeapps.list and user-dirs.dirs to ~/.config"
+install -Dm644 mimeapps.list "$HOME/.config/mimeapps.list" 2>/dev/null
+install -Dm644 user-dirs.dirs "$HOME/.config/user-dirs.dirs" 2>/dev/null
 
-echo "📦 Moving mimeapps.list and user-dirs.dirs to ~/.config"
-[ -f mimeapps.list ] && mv -v mimeapps.list ~/.config/
-[ -f user-dirs.dirs ] && mv -v user-dirs.dirs ~/.config/
-
-echo "📦 Moving all directories, files, and hidden files to ~/.config"
-shopt -s dotglob  # Include hidden files
+echo "📦 Installing all directories, files, and hidden files to ~/.config (excluding this script and .git)"
+rm -rf .git
+shopt -s dotglob
+this_script="$(basename "$0")"
 for item in * .*; do
-  if [[ "$item" != "." && "$item" != ".." && "$item" != "$(basename "$0")" && "$item" != *.sh ]]; then
-    mv -v "$item" ~/.config/
+  if [[ "$item" != "." && "$item" != ".." && "$item" != "$this_script" && "$item" != *.sh && ! -d "$item" ]]; then
+    install -Dm755 "$item" "$HOME/.config/$item"
   fi
 done
 shopt -u dotglob
 
-echo "🔐 Making all moved items in ~/.config executable (if applicable)"
-find ~/.config -type f -exec chmod +x {} \;
-
-echo "📦 Moving all .sh files to ~ (excluding this script)"
-this_script="$(basename "$0")"
-find . -maxdepth 1 -type f -name "*.sh" ! -name "$this_script" -exec mv -v {} ~ \;
-
-echo "🔐 Making all .sh files in ~ executable"
-chmod +x ~/*.sh
+echo "📦 Installing all .sh files to ~ (excluding this script)"
+find . -maxdepth 1 -type f -name "*.sh" ! -name "$this_script" -exec install -Dm755 {} "$HOME"/{} \;
 
 echo "📁 Going up one directory"
 cd ..
@@ -34,4 +27,5 @@ echo "🧹 Removing 'mwpsb' directory"
 sudo rm -rf mwpsb
 
 echo "🚀 Running ~/setup-nala-wrapper.sh"
-sudo ./setup-nala-wrapper.sh
+sudo ~/setup-nala-wrapper.sh
+sudo apt-get update
