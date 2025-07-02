@@ -8,7 +8,7 @@ sudo apt-get -y install xserver-xorg-input-all xserver-xorg-input-libinput xserv
 sudo apt-get -y install xserver-xorg-video-all xserver-xorg-video-fbdev xserver-xorg-video-intel
 sudo apt-get -y install xserver-xorg-video-nouveau xserver-xorg-video-qxl xserver-xorg-video-vesa
 sudo apt-get -y install xserver-xorg-video-vmware xtrans-dev xserver-xephyr xauth x11proto-core-dev
-sudo apt-get -y install xserver-xorg-video-siliconmotion xrdp synaptic x11-xserver-utils dbus-x11
+sudo apt-get -y install xserver-xorg-video-siliconmotion xrdp x11-xserver-utils dbus-x11
 sudo apt-get -y install x11proto-dev x11-apps x11-common x11-session-utils x11-utils x11-xkb-utils
 
 # =========================
@@ -24,15 +24,6 @@ sudo apt-get -y install libavahi-client-dev libavahi-client3 libavahi-common-dat
 sudo apt-get -y install util-linux pciutils lm-sensors lsb-release uptimed coreutils gawk mawk
 
 # =========================
-# Bluetooth, Network, and Utilities
-# =========================
-sudo apt-get -y install mtools smbclient cifs-utils ripgrep fd-find autoconf xbacklight
-sudo apt-get -y install bluez blueman maim scrot slop terminator autoconf-archive
-sudo apt-get -y install bluefish bluefish-data bluefish-plugins dhmake suckless-tools
-sudo apt-get -y install geany geany-plugins rxvt-unicode cdbs debhelper gettext libgtk-3-dev
-sudo apt-get -y install network-manager gnome-power-manager
-
-# =========================
 # Enable and Start Services
 # =========================
 sudo systemctl enable bluetooth
@@ -43,20 +34,13 @@ sudo systemctl start acpid
 # =========================
 #  Window Manager
 # =========================
-sudo apt-get -y install bspwm sxhkd
+sudo apt-get -y install bspwm sxhkd nemo xdg-user-dirs
 
 # =========================
 # Set BSPWM as default
 # =========================
 sudo update-alternatives --install /usr/bin/x-window-manager x-window-manager /usr/bin/bspwm 50
 sudo update-alternatives --auto x-window-manager
-
-# =========================
-# Install additional utilities
-# =========================
-sudo apt-get -y install unzip zip xvkbd xinput lxappearance dialog mtools dosfstools
-sudo apt-get -y install wmctrl xbacklight xbindkeys xdotool libnotify-bin nemo xdg-user-dirs
-sudo apt-get -y install rofi polybar kitty alacritty xautomation
 
 # =========================
 # Install xdg-user-dirs-gtk
@@ -71,11 +55,46 @@ rm -rf /tmp/xdg-user-dirs-gtk
 # Build Directories
 # =========================
 xdg-user-dirs-update
+sleep 2
+xdg-user-dirs--gtk-update
 
 # =========================
 # Set locale for user directories
 # =========================
 echo "en_US.UTF-8" > ~/.config/user-dirs.locale
+
+
+# =========================
+# Install additional utilities
+# =========================
+sudo apt-get -y install unzip zip xvkbd xinput lxappearance dialog mtools dosfstools
+sudo apt-get -y install wmctrl xbacklight xbindkeys xdotool libnotify-bin 
+sudo apt-get -y install rofi polybar kitty alacritty xautomation
+
+
+# =========================
+# Bluetooth, Network, and Utilities
+# =========================
+sudo apt-get -y install mtools smbclient cifs-utils ripgrep fd-find autoconf xbacklight
+sudo apt-get -y install bluez blueman maim scrot slop terminator autoconf-archive shared-mime-info
+sudo apt-get -y install bluefish bluefish-data bluefish-plugins dhmake suckless-tools libtext-template-perl
+sudo apt-get -y install geany geany-plugins rxvt-unicode cdbs debhelper gettext libgtk-3-dev
+sudo apt-get -y install network-manager gnome-power-manager ghostscript ghostscript-x lintian binutils-multiarch
+sudo apt-get -y install glib2.0  libglib2.0-bin  libglib2.0-data  libglib2.0-dev  libglib2.0-dev-bin  libglib2.0-tests
+sudo apt-get -y install libghc-gio-dev glib2.0 libgio-2.0-dev libgdk-pixbuf2.0-bin gdk-pixbuf ruby-gdk-pixbuf2
+
+#########################################
+## GTK and Glib
+################################################
+sudo apt-get -y install libwebkit2gtk-4.0-dev auto-tools intltoolize libgspell-1 libwebkit2gtk-4.0-dev libgtk-3-dev libglib2.0-0
+sudo apt-get -y install automake build-essential intltool libglib2.0-dev libgtk-3-dev libglib2.0-dev libgtk-3-dev libglib2.0-dev-bin intltool
+sudo apt-get -y install autoconf intltool libgtk-3 libgspell-1 libgtksourceview-3.0-1 libwebkit2gtk-4.1-0 libgspell-1-2 libglib2.0-dev libgtk-3-dev gettext
+sudo apt-get -y install autoconf-archive gstreamer1.0-libav gstreamer1.0-plugins-good autoconf autotools-dev gspell-1-tests libglib2.0-bin libxapp-gtk3-module
+sudo apt-get -y install libwebkit2gtk-4.0 libwebkit2gtk-4.0-dev gstreamer1.0-alsa gstreamer1.0-pulseaudio libgspell-1-common libglib2.0-cil-dev
+sudo apt-get -y install libgtksourceview-3.0-1 libgtksourceview-3.0-common libgtksourceview-3.0-dev libgl1-mesa-dri gcc libglib2.0-data gsettings-desktop-schemas-dev
+sudo apt-get -y install libgl1-mesa-dri gstreamer1.0-pulseaudio gstreamer1.0-libav gstreamer1.0-alsa intltool libwebkit2gtk-4.1-dev libdbus-glib2.0-cil
+sudo apt-get -y install libwebkit2gtk-4.0 libwebkit2gtk-4.0-dev libxapp-gtk3-module gstreamer1.0-libav gir1.2-gspell-1 libglib2.0-cil inxi webkit2gtk-driver
+sudo apt-get -y install xapp-sn-watcher libxapp-gtk3-module libgspell-1-dev libgspell-1-dev auto-tools intltoolize clang libdbus-glib2.0-cil-dev
  
 # =========================
 # Fonts
