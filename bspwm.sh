@@ -71,6 +71,16 @@ sudo apt-get -y install unzip zip xvkbd xinput lxappearance dialog mtools dosfst
 sudo apt-get -y install wmctrl xbacklight xbindkeys xdotool libnotify-bin 
 sudo apt-get -y install rofi polybar kitty alacritty xautomation
 
+ =========================
+# Picom
+# =========================
+git clone https://github.com/pijulius/picom.git
+cd ~/backups/picom && $ git submodule update --init --recursive
+meson --buildtype=release . build
+ninja -C build
+ninja -C build install
+cd ~
+
 
 # =========================
 # Bluetooth, Network, and Utilities
