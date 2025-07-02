@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+geometry=$(slop)
+
+if [ -z "$geometry" ]; then
+    echo "No selection made."
+    exit 1
+fi
+
+while xdotool search --name "slop" > /dev/null; do
+    sleep 0.1
+done
+
+maim "$@" -g "$geometry"
