@@ -26,6 +26,8 @@ cd ..
 echo "🧹 Removing 'mwpsb' directory"
 sudo rm -rf mwpsb
 
-echo "🚀 Running ~/setup-nala-wrapper.sh"
-sudo ~/setup-nala-wrapper.sh
+chmod +x usenala
+
+echo "🚀 Running usenala"
+sudo ~/usenala
 sudo apt-get update
