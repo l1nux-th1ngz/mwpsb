@@ -25,9 +25,3 @@ cd ..
 
 echo "🧹 Removing 'mwpsb' directory"
 sudo rm -rf mwpsb
-
-chmod +x usenala
-
-echo "🚀 Running usenala"
-sudo ~/usenala
-sudo apt-get update
