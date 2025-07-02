@@ -1,0 +1,56 @@
+#--------[ wm independent hotkeys ]
+
+super + Return
+    terminator
+
+super + p
+    brave-browser
+
+super + o
+    nemo
+
+super + d
+    	~/.config/dmenu/dmenu
+
+super + space
+		~/.config/rofi/scripts/rofi-familiar
+
+super + q
+    bspc node -c
+
+ctrl + super + x
+	~/.config/rofi/scripts/nakedquit
+
+
+super + a
+	themes
+
+ctrl + alt + del
+    ~/.config/lock.sh
+ 
+# brightness: up | down
+XF86{MonBrightnessUp,MonBrightnessDown}
+	~/.config/bspwm/scripts/display/brightness {up,down}
+
+# volume: up | down | mute
+XF86Audio{RaiseVolume,LowerVolume,Mute}
+	~/.config/bspwm/scripts/sound/volume {up,down,mute}
+F12
+	networkmanager_dmenu
+
+#--------[ scripts ]
+
+super + shift + {p,m,Return}
+	bash -c ~/.config/bspwm/{scripts/sound/musik,switch,/rofi/rofi}
+{Print,super + Print}
+	bash -c ~/.config/bspwm/scripts/shot/{shot-now,screenshot.sh}
+
+# powermenu | info battery
+super + {_,shift +} Delete
+	bash -c ~/.config/bspwm/scripts/powermenu/{powermenu.sh,info-bat.sh}
+super + alt + Delete
+	bash -c ~/.config/bspwm/scripts/powermenu/battery_status.sh
+
+# Push focused window to scratchpad (background)
+super + {_,shift +} a
+	~/.config/bspwm/scratchpad.sh {switch-app,toggle-flag}

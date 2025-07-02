@@ -1,0 +1,9 @@
+[Added Associations]
+application/x-shellscript=geany.desktop;
+inode/directory=nemo-file-manager.desktop;
+x-scheme-handler/trash=nemo-file-manager.desktop;
+application/x-desktop=geany.desktop;
+
+[Default Applications]
+inode/directory=nemo-file-manager.desktop
+x-scheme-handler/trash=nemo-file-manager.desktop
