@@ -58,13 +58,11 @@ sudo apt-get -y install unzip zip xvkbd xinput lxappearance dialog mtools dosfst
 sudo apt-get -y install wmctrl xbacklight xbindkeys xdotool libnotify-bin nemo xdg-user-dirs
 sudo apt-get -y install rofi polybar kitty alacritty xautomation
 # =========================
-# Clone and Install xdg-user-dirs-gtk from Source
+# Install xdg-user-dirs-gtk
 # =========================
 git clone https://github.com/GNOME/xdg-user-dirs-gtk.git /tmp/xdg-user-dirs-gtk
 cd /tmp/xdg-user-dirs-gtk
-meson setup build
-ninja -C build
-sudo ninja -C build install
+meson setup build && ninja -C build && sudo ninja -C build install
 cd ~
 rm -rf /tmp/xdg-user-dirs-gtk
 
