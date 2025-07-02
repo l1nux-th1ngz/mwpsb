@@ -57,6 +57,7 @@ sudo update-alternatives --auto x-window-manager
 sudo apt-get -y install unzip zip xvkbd xinput lxappearance dialog mtools dosfstools
 sudo apt-get -y install wmctrl xbacklight xbindkeys xdotool libnotify-bin nemo xdg-user-dirs
 sudo apt-get -y install rofi polybar kitty alacritty xautomation
+
 # =========================
 # Install xdg-user-dirs-gtk
 # =========================
@@ -79,55 +80,40 @@ echo "en_US.UTF-8" > ~/.config/user-dirs.locale
 # =========================
 # Fonts
 # =========================
-sudo apt-get -y install fonts-dejavu fonts-dejavu-extra fonts-droid-fallback fonts-recommended \
-sudo apt-get -y install fonts-freefont-ttf fonts-liberation fonts-noto-mono fonts-font-awesome \
+sudo apt-get -y install fonts-dejavu fonts-dejavu-extra fonts-droid-fallback fonts-recommended
+sudo apt-get -y install fonts-freefont-ttf fonts-liberation fonts-noto-mono fonts-font-awesome
 sudo apt-get -y install fonts-opensymbol ttf-bitstream-vera ttf-mscorefonts-installer fonts-terminus
 
-# Brave 
+# =========================
+# Brave Browser
+# =========================
 BRAVE_KEY_URL="https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
 BRAVE_KEYRING_PATH="/usr/share/keyrings/brave-browser-archive-keyring.gpg"
 BRAVE_REPO_DEFINITION="deb [arch=amd64 signed-by=${BRAVE_KEYRING_PATH}] https://brave-browser-apt-release.s3.brave.com/ stable main"
 BRAVE_REPO_FILE="/etc/apt/sources.list.d/brave-browser-release.list"
-echo "--- Brave Browser Installation Script ---"
-if [ -f "$BRAVE_KEYRING_PATH" ]; then
-  echo "Brave browser GPG key already exists at $BRAVE_KEYRING_PATH."
-else
-  echo "Downloading browser key..."
-  sudo curl -fsSL "${BRAVE_KEY_URL}" -o "${BRAVE_KEYRING_PATH}"
-  echo "Brave browser GPG key downloaded successfully."
+
+if [ ! -f "$BRAVE_KEYRING_PATH" ]; then
+  sudo curl -fsSL "$BRAVE_KEY_URL" -o "$BRAVE_KEYRING_PATH"
 fi
-if [ -f "$BRAVE_REPO_FILE" ] && grep -q "${BRAVE_REPO_DEFINITION}" "$BRAVE_REPO_FILE"; then
-  echo "Brave browser repository entry already exists in $BRAVE_REPO_FILE."
-else
-  echo "Adding the Brave browser repository to sources.list.d..."
-  echo "${BRAVE_REPO_DEFINITION}" | sudo tee "${BRAVE_REPO_FILE}" > /dev/null
-  echo "Brave browser repository added successfully."
+
+if [ ! -f "$BRAVE_REPO_FILE" ] || ! grep -q "$BRAVE_REPO_DEFINITION" "$BRAVE_REPO_FILE"; then
+  echo "$BRAVE_REPO_DEFINITION" | sudo tee "$BRAVE_REPO_FILE" > /dev/null
 fi
-echo "Updating package lists..."
+
 sudo apt-get update
-if dpkg -s brave-browser &> /dev/null; then
-  echo "Brave browser is already installed."
-else
-  echo "Installing Brave browser..."
-  sudo apt-get -y install brave-browser
-  echo "Brave browser installed successfully."
-fi 
+dpkg -s brave-browser &>/dev/null || sudo apt-get -y install brave-browser
 
 # =========================
-# LightDM
+# LightDM Session
 # =========================
-echo "Installing LightDM.."
 sudo apt-get -y install lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
 
-# Create bspwm session script
 sudo tee /usr/bin/bspwm-session > /dev/null << 'EOF'
 #!/bin/bash
 exec bspwm
 EOF
 sudo chmod +x /usr/bin/bspwm-session
-# =========================
-# Register bspwm session with LightDM
-# =========================
+
 sudo tee /usr/share/xsessions/bspwm.desktop > /dev/null << 'EOF'
 [Desktop Entry]
 Name=BSPWM
@@ -136,9 +122,7 @@ Exec=/usr/bin/bspwm-session
 Type=Application
 Icon=
 EOF
-# =========================
-# LightDM configuration override
-# =========================
+
 sudo mkdir -p /etc/lightdm/lightdm.conf.d
 sudo tee /etc/lightdm/lightdm.conf.d/50-bspwm.conf > /dev/null << 'EOF'
 [Seat:*]
@@ -150,14 +134,11 @@ allow-user-switching=true
 EOF
 
 # =========================
-# Set ownership for session files
+# Ownership and Restart
 # =========================
-echo "Setting ownership of bspwm session files to $username..."
 username=$(logname)
 sudo chown "$username":"$username" /usr/bin/bspwm-session /usr/share/xsessions/bspwm.desktop
-# =========================
-# Restart LightDM to apply changes
-# =========================
+
 echo "🔄 Restarting LightDM to apply changes..."
 sudo systemctl enable lightdm
 sudo systemctl restart lightdm
